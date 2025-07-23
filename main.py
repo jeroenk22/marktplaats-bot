@@ -4,6 +4,13 @@ import time
 import os
 from datetime import datetime
 from dotenv import load_dotenv
+import sys
+
+# ⬇️ Zorg dat logs/output.log bestaat en stuur print()-output daarheen
+os.makedirs("logs", exist_ok=True)
+log_path = os.path.join("logs", "output.log")
+sys.stdout = open(log_path, "a")
+sys.stderr = sys.stdout
 
 # 🔒 Laad gevoelige gegevens uit .env
 load_dotenv()
