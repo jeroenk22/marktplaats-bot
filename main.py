@@ -99,25 +99,29 @@ def check_marktplaats(keywords, seen_ads):
 
 
 if __name__ == "__main__":
-    while True:
-        try:
-            with open("zoekwoorden.txt", "r") as f:
-                new_keywords = [x.strip() for x in f.readlines() if x.strip()]
-            if not new_keywords:
-                print("🛑 Geen zoekwoorden gevonden in 'zoekwoorden.txt'. Script wacht tot er zoekwoorden zijn.")
+    try:
+        while True:
+            try:
+                with open("zoekwoorden.txt", "r") as f:
+                    new_keywords = [x.strip() for x in f.readlines() if x.strip()]
+                if not new_keywords:
+                    print("🛑 Geen zoekwoorden gevonden in 'zoekwoorden.txt'. Script wacht tot er zoekwoorden zijn.")
+                    time.sleep(60)
+                    continue
+                zoekwoorden = new_keywords
+            except FileNotFoundError:
+                print("🛑 'zoekwoorden.txt' niet gevonden. Maak dit bestand aan en voeg zoekwoorden toe (één per regel).")
                 time.sleep(60)
                 continue
-            zoekwoorden = new_keywords
-        except FileNotFoundError:
-            print("🛑 'zoekwoorden.txt' niet gevonden. Maak dit bestand aan en voeg zoekwoorden toe (één per regel).")
+
+            seen = load_seen()
+            print(f"Geladen geziene advertenties ({len(seen)} zoektermen): {sum(len(v) for v in seen.values())} advertenties")
+            check_marktplaats(zoekwoorden, seen)
+            save_seen(seen)
+            print("⏳ Even wachten...\n")
+
+            print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] ✅ Check afgerond.")
             time.sleep(60)
-            continue
-
-        seen = load_seen()
-        print(f"Geladen geziene advertenties ({len(seen)} zoektermen): {sum(len(v) for v in seen.values())} advertenties")
-        check_marktplaats(zoekwoorden, seen)
-        save_seen(seen)
-        print("⏳ Even wachten...\n")
-
-        print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] ✅ Check afgerond.")
-        time.sleep(60)
+    except KeyboardInterrupt:
+        print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] ⛔ Script handmatig gestopt.")
+        sys.exit(0)
