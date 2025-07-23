@@ -120,6 +120,7 @@ if __name__ == "__main__":
             save_seen(seen)
             print("⏳ Even wachten...\n")
 
+            print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] ℹ️ Geen nieuwe advertenties gevonden of alles al eerder gezien.")
             print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] ✅ Check afgerond.")
             time.sleep(60)
     except KeyboardInterrupt:
