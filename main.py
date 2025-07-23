@@ -2,6 +2,7 @@ import requests
 import json
 import time
 import os
+from datetime import datetime
 from dotenv import load_dotenv
 
 # 🔒 Laad gevoelige gegevens uit .env
@@ -110,4 +111,6 @@ if __name__ == "__main__":
         check_marktplaats(zoekwoorden, seen)
         save_seen(seen)
         print("⏳ Even wachten...\n")
+
+        print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] ✅ Check afgerond.")
         time.sleep(60)
